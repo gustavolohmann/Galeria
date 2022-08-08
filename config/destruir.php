@@ -2,6 +2,7 @@
 session_start();
 include_once("conn.php");
 $data = $_POST;
+
 function destruir_sessao($data)
 {
     if (!empty($_SESSION["name"])) {

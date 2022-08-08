@@ -19,10 +19,19 @@ if (fecha_modal) {
 
 
 const button_modal_add_foto = document.getElementById("button_modal_add_foto");
+const container_send_img = document.querySelector(".container_send_img");
+const fecha_modal_fotos = document.getElementById("fecha_modal_fotos");
 
 function open_modal_foto() {
-    
+    container_send_img.classList.add("animation_modal_add_foto");
 }
 if (button_modal_add_foto) {
     button_modal_add_foto.addEventListener("click", open_modal_foto);
+}
+
+function hidden_modal_add_fotos() {
+    container_send_img.classList.remove("animation_modal_add_foto");
+}
+if (fecha_modal_fotos) {
+    fecha_modal_fotos.addEventListener("click", hidden_modal_add_fotos);
 }

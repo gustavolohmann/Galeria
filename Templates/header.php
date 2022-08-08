@@ -13,10 +13,10 @@ session_start();
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@200&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/style.css">
-    <title>Index-Projeto-Fotos</title>
+    <title>Galeria</title>
 </head>
 
-<body onload="get_fotos()">
+<body onload="get_fotos();">
     <header>
         <div class="container-logoff">
             <div class="button-logout">

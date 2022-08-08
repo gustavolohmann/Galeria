@@ -23,6 +23,7 @@ session_start();
 			</div>
 		</div>
 		<div class="form">
+			<div class="container_msn_denied"></div>
 			<form class="form_login">
 				<div class="input_login">
 					<div class="titulo_principal">

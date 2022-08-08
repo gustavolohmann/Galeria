@@ -1,125 +1,89 @@
-
+const galeria = document.querySelector(".galeria");
 async function get_fotos() {
 
-    const url = "http://localhost:7000/config/select_fotos.php";
+    const url = "../config/select_fotos.php";
 
-    const req = await fetch(url)
-        .then(response => {
+    const req = await fetch(url);
+    const res = await req.json();
 
-            return response.json();
+    if (res["img"]) {
 
-        }).then(imagens => {
+        galeria.innerHTML += res["img"];
 
-            const img_galeria = document.querySelector(".galeria");
+        const img_modal_view = document.getElementById("img_modal_view");
+        const container_modal_show_img = document.querySelector(".container_modal_show_img");
+        const size = galeria.childElementCount;
+    
+        for (let index = 0; index < size; index++) {
 
-            if (imagens) {
+            galeria.childNodes[index].addEventListener("click", () => {
 
-                for (let i = 0; i < imagens.length; i++) {
+                container_modal_show_img.classList.add("class_animation_container_modal_show_img");
+                img_modal_view.src = galeria.childNodes[index]["src"];
 
-                    if (imagens[i].imagem != "") {
+            });
+          
+        }
+        const button_hidden_container_modal_show_img = document.getElementById("button_hidden_container_modal_show_img");
 
-                        img_galeria.innerHTML +=
-                            `<img id="img_galeria" src="../img/${imagens[i].imagem}.${imagens[i].tipo}">`;
-                    }
-                }
-            } else {
-                img_galeria.innerHTML = '<div><h1>Não tem fotos</h1><div>';
-            }
-        });
+        function hidden_() {
+
+            container_modal_show_img.classList.remove("class_animation_container_modal_show_img");
+
+        }
+
+        button_hidden_container_modal_show_img.addEventListener("click", hidden_);
+    }
+    if (res["denied"]) {
+        galeria.innerHTML = res["denied"];
+    }
 }
 
-// CADASTRA CLIENTE
-const main_form_cad = document.querySelector(".main_form_cad");// form
+//pre view
+const get_foto = document.getElementById("get_foto"); // label
+const pre_view_img = document.getElementById("pre_view_img"); // imagem
+const foto = document.getElementById("foto"); // input
 
-const messages_report = document.getElementById("messages_report");
+get_foto.addEventListener("click", (event) => {
+    foto.click();
+});
 
-if (main_form_cad) {
-    main_form_cad.addEventListener("submit", async (e) => {
+foto.addEventListener("change", () => {
+    let file = new FileReader();
+    file.onload = function () {
+        pre_view_img.src = file.result;
+        console.log(file);
+    }
 
-        e.preventDefault();
+    file.readAsDataURL(foto.files[0]);
 
-        const form_user = new FormData(main_form_cad);
-
-        const obj_send = {
-
-            method: "POST",
-            body: form_user
-        }
-
-        const url = "../config/cadastro.php";
-        const req = await fetch(url, obj_send);
-        const res = await req.json();
-
-        //messages_report 
-        if (res["denied"]) {
-            messages_report.style.color = "red";
-            messages_report.innerHTML = res["denied"];
-        }
-        if (res["success"]) {
-            messages_report.style.color = "green";
-            messages_report.innerHTML = res["success"];
-        }
-
-    });
-}
-
-
-//login no sistema
-
-const form_login = document.querySelector(".form_login");
-const form = document.querySelector(".form");
-if (form_login) {
-    form_login.addEventListener("submit", async (e) => {
-        e.preventDefault();
-        const formLogin = new FormData(form_login);
-
-        const obj_send = {
-
-            method: "POST",
-            body: formLogin
-        }
-        const url = "../config/process.php";
-        const req = await fetch(url, obj_send);
-        const res = await req.json();
-        if (res["login"]) {
-            window.location.href = "http://localhost:7000/Templates/index.php";
-        } i
-        if (res["msn_denied"]) {
-            form.innerHTML += res["msn_denied"];
-        }
-
-    });
-
-}
-
-
-
+});
 
 //send imagens 
-// action="../config/foto.php" method="POST"
 const send_img = document.querySelector(".send_img");
-const pre_view_img = document.getElementById("pre_view_img");
+const msn_form_ = document.querySelector(".msn_form_");
 if (send_img) {
     send_img.addEventListener("submit", async (e) => {
         e.preventDefault();
 
         const form_img = new FormData(send_img);
-
         const obj_img = {
             method: "POST",
             body: form_img
         }
+
         const url = "../config/foto.php";
         const req = await fetch(url, obj_img);
         const res = await req.json();
 
-        if (res["img"]) {
-            console.log(res["img"]); // ["full_path"]
-            pre_view_img.src = "../" + res["img"]["tmp_name"] + "/" + res["img"]["full_path"];
+        if (res["success"]) {
+            msn_form_.innerHTML = res["success"];
         }
         if (res["denied"]) {
-            console.log(res["denied"]);
+            msn_form_.innerHTML = res["denied"];
         }
     });
 }
+
+
 

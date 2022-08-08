@@ -17,19 +17,20 @@ function UserAcess($acess, $conn)
         $stmt->execute();
 
         if ($stmt->rowCount()) {
+
             $row = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-            if ($row != 0) {
+            if ($row) {
                 foreach ($row as $rows) {
                     extract($rows);
                     $_SESSION["name"] = $name;
-                    $_SESSION['id_usuario'] = $id_usuario;
+                    $_SESSION['id_cliente'] = $id_cliente;
+                    $login_sucess = ["login" => true];
+                    return $login_sucess;
                 }
-                $login_sucess = ["login" => true];
-                return $login_sucess;
             }
         }
-        if ($stmt->rowCount() == 0) {
+        if (!$stmt->rowCount()) {
             $msn = "<div class='message_denied'><p id='denied_login'>Dados informados incorretos ou inexistentes! Por favor, verifique os campos obrigatórios e tente novamente!</p>
             </div>";
             $message = ["msn_denied" => $msn];
@@ -37,6 +38,5 @@ function UserAcess($acess, $conn)
         }
     }
 }
-
 $UserAcess = UserAcess($_POST, $conn);
 echo json_encode($UserAcess);
